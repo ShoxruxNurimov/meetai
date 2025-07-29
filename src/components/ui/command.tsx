@@ -21,6 +21,11 @@ import {
     DrawerDescription,
 } from "@/components/ui/drawer";
 
+/**
+ * Renders a styled command menu container based on the Command Primitive component.
+ *
+ * Applies layout, background, and text styling, and supports additional class names and props for customization.
+ */
 function Command({
   className,
   ...props
@@ -37,6 +42,17 @@ function Command({
   )
 }
 
+/**
+ * Displays a command palette dialog with customizable title, description, and content.
+ *
+ * Renders a modal dialog containing a styled command menu, suitable for searching and executing commands. The dialog includes visually hidden header elements for accessibility and supports custom content and styling.
+ *
+ * @param title - The dialog's title for accessibility purposes. Defaults to "Command Palette".
+ * @param description - The dialog's description for accessibility. Defaults to "Search for a command to run...".
+ * @param children - The command menu content to display inside the dialog.
+ * @param className - Additional class names for custom styling of the dialog content.
+ * @param showCloseButton - Whether to display the close button in the dialog. Defaults to true.
+ */
 function CommandDialog({
   title = "Command Palette",
   description = "Search for a command to run...",
@@ -68,6 +84,18 @@ function CommandDialog({
   )
 }
 
+/**
+ * Renders a responsive command palette dialog that adapts to mobile and desktop devices.
+ *
+ * On mobile devices, displays the command palette inside a drawer. On desktop, uses a dialog. Both variants include accessible headers and customizable content.
+ *
+ * @param title - Optional dialog or drawer title for accessibility
+ * @param description - Optional description for accessibility
+ * @param children - Command menu content to display inside the palette
+ * @param className - Additional class names for custom styling
+ * @param showCloseButton - Whether to show the close button in the dialog (desktop only)
+ * @returns The responsive command palette dialog or drawer element
+ */
 function CommandResponsiveDialog({
   title = "Command Palette",
   description = "Search for a command to run...",
@@ -117,6 +145,11 @@ function CommandResponsiveDialog({
   )
 }
 
+/**
+ * Renders a styled input field with a search icon for use within a command menu.
+ *
+ * Accepts all props supported by the underlying command input primitive.
+ */
 function CommandInput({
   className,
   ...props
