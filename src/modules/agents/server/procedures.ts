@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 import { and, count, desc, eq, getTableColumns, ilike, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { agents } from "@/db/schema";
@@ -9,7 +10,7 @@ import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, MIN_PAGE_SIZE } from "@
 export const agentsRouter = createTRPCRouter({
     getOne: protectedProcedure
         .input(z.object({ id: z.string()}))
-        .query(async ({ input}) => {
+        .query(async ({ input, ctx}) => {
         const [existingAgent] = await db
             .select({
                 //TODO: Change to actual count
@@ -17,8 +18,17 @@ export const agentsRouter = createTRPCRouter({
                 ...getTableColumns(agents),
             })
             .from(agents)
-            .where(eq(agents.id, input.id))
-
+            .where(
+                and(
+                    eq(agents.id, input.id),
+                    eq(agents.userId, ctx.auth.user.id),
+                )
+            );
+        
+        if (!existingAgent) {
+            throw new TRPCError({ code: "NOT_FOUND", message: "Agent not found" });
+        }
+        
         return existingAgent;
     }),
     getMany: protectedProcedure
